@@ -137,9 +137,10 @@ sensor:
             condition:
               - binary_sensor.is_on: knob_button
             then:
-              - number.increment:
+              - number.set: # on clockwise turns, increment odometer by 1
                   id: bike_odometer
-                  cycle: false
+                  value: !lambda |-
+                    return id(bike_odometer).state + 1;
             else:
               - number.increment:
                   id: charge_setpoint
@@ -150,7 +151,7 @@ sensor:
             condition:
               - binary_sensor.is_on: knob_button
             then:
-              - number.decrement:
+              - number.increment: #on counter-clockwise turns, increment odometer by 0.1
                   id: bike_odometer
                   cycle: false
             else:
@@ -263,7 +264,7 @@ display:
       it.printf(0, 0, id(roboto_15), "V:%.2f", id(battery_voltage).state);
       it.printf(0, 15, id(roboto_15), "%%:%.0f", id(battery_percentage).state);
       if (id(knob_button).state) {
-        it.printf(0, 30, id(roboto_15), "Odo:%.0f", id(bike_odometer).state);
+        it.printf(0, 30, id(roboto_15), "km%.1f", id(bike_odometer).state);
       } else {
         it.printf(0, 30, id(roboto_15), "SP:%.0f", id(charge_setpoint).state);
       }
