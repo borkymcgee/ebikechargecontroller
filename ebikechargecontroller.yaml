@@ -192,18 +192,16 @@ sensor:
                 }
               }
             }
-  - platform: template
-    name: "Battery Percentage at last Unplug"
-    id: unplug_percentage
-
 
 
 number:
-  - platform: template  #manually set upon each time plugging in, intended to transfer the bike's odo into hassio manually
+  - platform: template  #manually set upon each time plugging in, intended to transfer the bike's odo into hassio manually. this should be a sensor but then it wont restore its state
     name: "Bike Odometer"
     id: bike_odometer
     unit_of_measurement: "km"
-    icon: "mdi:trending_up"
+    mode: box
+    device_class: "distance"
+    icon: "mdi:trending-up"
     restore_value: true
     optimistic: true
     step: 0.1
